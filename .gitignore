@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.ruff_cache/
+*.pyc
+*.sqlite*
+*.db
+.env*
+private/
+state/
+workspace/
+history/
+sessions/
+auth.json
+dist/
+build/
+*.tar*

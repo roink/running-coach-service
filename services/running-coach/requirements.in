@@ -1,0 +1,8 @@
+aiohttp>=3.12,<4
+matrix-nio[e2e]>=0.25,<0.27
+Pillow>=11,<13
+pymongo>=4.10,<5
+numpy>=2,<3
+pandas>=2.2,<3
+matplotlib>=3.10,<4
+scipy>=1.15,<2

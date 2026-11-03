@@ -1,0 +1,5 @@
+**
+!Containerfile
+!requirements.txt
+!coach/
+!coach/*.py
