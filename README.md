@@ -73,3 +73,7 @@ a turn; the coach must ask when essential information is unavailable.
 
 This changes future inputs; it does not remove file contents already present in
 the saved conversation. Normal Codex compaction manages older thread context.
+
+The worker image includes `file` for inspecting generated artifacts, alongside
+Python/Pillow and the PDF utilities. CI exercises `file` inside the confined
+candidate image, including its installed magic database.

@@ -4,7 +4,7 @@ RUN npm install --global @openai/codex@${CODEX_VERSION}
 
 FROM docker.io/library/python:3.12-slim-bookworm
 RUN apt-get update && apt-get install --yes --no-install-recommends \
-    ca-certificates curl ripgrep git poppler-utils libstdc++6 bubblewrap \
+    ca-certificates curl ripgrep git file poppler-utils libstdc++6 bubblewrap \
     && apt-get clean
 COPY --from=codex /usr/local/bin/node /usr/local/bin/node
 COPY --from=codex /usr/local/lib/node_modules/@openai /usr/local/lib/node_modules/@openai

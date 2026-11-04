@@ -80,6 +80,14 @@ def main():
         "--env=CODEX_HOME=/tmp/codex",
         "--entrypoint=python",
     )
+    run(
+        *base,
+        IMAGE,
+        "-I",
+        "-c",
+        "import subprocess; subprocess.run("
+        "['file', '--mime-type', '/usr/local/bin/python3.12'], check=True)",
+    )
     run(*base, IMAGE, "-I", "-m", "coach.maintenance", "candidate")
     for pattern in ("test_coach*.py", "test_matrix_coach_maintenance.py"):
         run(
