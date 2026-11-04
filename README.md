@@ -57,3 +57,19 @@ point expects the normal `GITHUB_SHA`, `GITHUB_RUN_ID`, `GITHUB_RUN_ATTEMPT` and
 `GITHUB_RUN_NUMBER` values supplied by Actions. No application credentials are
 needed or accepted. Runtime service configuration is provided only as protected
 NAS bind mounts and environment files, outside this repository.
+
+## Context and memory
+
+Chat and automatic workout reviews share one persistent Codex thread. Each turn
+reloads only workspace `AGENTS.md`, the small baseline for coaching behavior,
+broadly applicable restrictions and essential preferences. Detailed athlete notes
+are optional workspace files, read by the coach when relevant rather than
+injected into every message. Before workout analysis or specific training advice,
+the coach is instructed to check current athlete constraints, goals and relevant
+memories; race and coaching notes are consulted for the decisions they inform.
+Simple clarifications can use conversation context alone. Current files take
+precedence over older copies in the thread. Missing optional files do not prevent
+a turn; the coach must ask when essential information is unavailable.
+
+This changes future inputs; it does not remove file contents already present in
+the saved conversation. Normal Codex compaction manages older thread context.

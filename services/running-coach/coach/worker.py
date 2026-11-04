@@ -70,20 +70,10 @@ class Worker:
                     raise
 
     async def analyze(self, job):
-        # Mutable preferences are loaded anew without granting authority over policy.
-        context = []
-        for filename in [
-            "AGENTS.md",
-            "ATHLETE.md",
-            "GOALS.md",
-            "MEMORY.md",
-            "COACHING.md",
-            "RACES.md",
-        ]:
-            text = (self.workspace / filename).read_text()
-            if len(text) > 32_000:
-                raise ValueError("Memory file exceeds context budget")
-            context.append(f"\n--- {filename} ---\n{text}")
+        # Only the small baseline is automatic; detailed notes are read when relevant.
+        baseline = (self.workspace / "AGENTS.md").read_text()
+        if len(baseline) > 32_000:
+            raise ValueError("Memory file exceeds context budget")
         policy = self.policy()
         thread_id = self.queue.get("thread_id")
         if thread_id:
@@ -94,7 +84,8 @@ class Worker:
             self.queue.set("thread_id", thread_id)
         prompt = (
             "Athlete context for this turn:\n"
-            + "\n".join(context)
+            + "\n--- AGENTS.md ---\n"
+            + baseline
             + "\n\nJob ID: "
             + job["id"]
             + "\nRequest:\n"
@@ -147,7 +138,20 @@ class Worker:
             },
             "developerInstructions": (
                 "You are a running coach inside an externally confined service. "
-                "Use the supplied athlete context and available training-data tools. "
+                "Use the supplied AGENTS.md baseline and available training-data tools. "
+                "Other workspace notes are available on demand, not injected: ATHLETE.md "
+                "(background, constraints, metric caveats), GOALS.md (current priorities), "
+                "MEMORY.md (durable facts), COACHING.md (coaching preferences and decisions), "
+                "RACES.md (race plans and results). Do not read every file by default. "
+                "Before workout analysis or specific training advice, check current ATHLETE.md, "
+                "GOALS.md and relevant MEMORY.md entries; consult COACHING.md for preferences "
+                "or prior decisions and RACES.md for race timing or performance. "
+                "Simple clarifications can use the existing conversation without file reads. "
+                "Current files override stale copies in conversation history. Re-read relevant "
+                "notes when advice depends on their contents; missing optional notes are not "
+                "an error, but ask when essential information is unavailable. "
+                "Keep broadly applicable restrictions and essential preferences concise in "
+                "AGENTS.md; keep detailed history in the optional notes. "
                 "Read training using python -m coach.training history --start YYYY-MM-DD "
                 "--end YYYY-MM-DD (end exclusive), or python -m coach.training activity ID "
                 "--streams for detailed metrics. Paginate history as needed. "
